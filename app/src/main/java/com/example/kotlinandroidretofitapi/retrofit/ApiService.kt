@@ -1,5 +1,6 @@
 package com.example.kotlinandroidretofitapi.retrofit
 
+import com.lazday.kotlinandroidretrofit.retrofit.ApiEndpoint
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

@@ -3,6 +3,10 @@ package com.example.kotlinandroidretofitapi
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.ProgressBar
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.kotlinandroidretofitapi.retrofit.ApiService
 import retrofit2.Call
 import retrofit2.Callback
@@ -11,6 +15,8 @@ import retrofit2.Response
 class MainActivity : AppCompatActivity() {
     private val TAG : String = "MainActivity"
 
+    lateinit var mainAdapter: MainAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -18,17 +24,25 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStateNotSaved() {
         super.onStateNotSaved()
+        setUpRecyclerView()
         getDataFromApi()
     }
 
-    private fun getDataFromApi(){
+    private fun setUpRecyclerView() {
+        mainAdapter = MainAdapter(arrayListOf())
+        findViewById<RecyclerView>(R.id.recyclerView).adapter = mainAdapter
+        findViewById<RecyclerView>(R.id.recyclerView).layoutManager = LinearLayoutManager(applicationContext)
+    }
 
+    private fun getDataFromApi(){
+        findViewById<ProgressBar>(R.id.progressBar).visibility = View.VISIBLE
         ApiService.endpoint.getData()
             .enqueue(object : Callback<MainModel> {
                 override fun onResponse(
                     call: Call<MainModel>,
                     response: Response<MainModel>
                 ) {
+                    findViewById<ProgressBar>(R.id.progressBar).visibility = View.GONE
                     if (response.isSuccessful){
 //                        val result = response.body()
 //                        printLog(result.toString())
@@ -38,6 +52,7 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 override fun onFailure(call: Call<MainModel>, t: Throwable) {
+                    findViewById<ProgressBar>(R.id.progressBar).visibility = View.GONE
                     printLog(t.toString())
                 }
 
@@ -50,8 +65,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun showData(data: MainModel){
         val results = data.result
-        for (result in results){
-            printLog("title ${result.title}")
-        }
+
+        mainAdapter.setData( results )
+//        for (result in results){
+//            printLog("title ${result.title}")
+//        }
     }
 }
