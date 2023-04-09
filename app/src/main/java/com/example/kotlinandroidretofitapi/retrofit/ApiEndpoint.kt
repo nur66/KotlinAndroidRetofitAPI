@@ -6,7 +6,8 @@ import retrofit2.http.GET
 
 interface ApiEndpoint {
 
-    @GET("photos")
+    @GET("data.php")
     // Karena data kita berupa Array/ List, maka dia harus dibungkus di dalam List
-    fun getPhotos(): Call<List<MainModel>>
+//    fun getData(): Call<List<MainModel>> // Jika menggunakan Jsonplaceholder
+    fun getData(): Call<MainModel>
 }

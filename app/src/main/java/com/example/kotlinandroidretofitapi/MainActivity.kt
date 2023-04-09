@@ -2,7 +2,6 @@ package com.example.kotlinandroidretofitapi
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Message
 import android.util.Log
 import com.example.kotlinandroidretofitapi.retrofit.ApiService
 import retrofit2.Call
@@ -24,20 +23,21 @@ class MainActivity : AppCompatActivity() {
 
     private fun getDataFromApi(){
 
-        ApiService.endpoint.getPhotos()
-            .enqueue(object : Callback<List<MainModel>> {
+        ApiService.endpoint.getData()
+            .enqueue(object : Callback<MainModel> {
                 override fun onResponse(
-                    call: Call<List<MainModel>>,
-                    response: Response<List<MainModel>>
+                    call: Call<MainModel>,
+                    response: Response<MainModel>
                 ) {
                     if (response.isSuccessful){
-                        val result = response.body()
+//                        val result = response.body()
 //                        printLog(result.toString())
-                        showPhotos(result!!)
+//                        showPhotos(result!!)
+                        showData(response.body()!!)
                     }
                 }
 
-                override fun onFailure(call: Call<List<MainModel>>, t: Throwable) {
+                override fun onFailure(call: Call<MainModel>, t: Throwable) {
                     printLog(t.toString())
                 }
 
@@ -48,9 +48,10 @@ class MainActivity : AppCompatActivity() {
         Log.d(TAG, message)
     }
 
-    private fun showPhotos(photos : List<MainModel>){
-        for (photo in photos){
-            printLog("title ${photo.title}")
+    private fun showData(data: MainModel){
+        val results = data.result
+        for (result in results){
+            printLog("title ${result.title}")
         }
     }
 }
