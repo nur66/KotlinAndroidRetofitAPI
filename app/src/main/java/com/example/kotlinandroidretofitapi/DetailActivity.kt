@@ -12,8 +12,9 @@ class DetailActivity : AppCompatActivity() {
         setContentView(R.layout.activity_detail)
 
         supportActionBar!!.title = intent.getStringExtra("intent_title")
-        lateinit var view : View
-        val imageView = view.findViewById<ImageView>(R.id.imageView)
+//        lateinit var view : View
+//        val imageView = view.findViewById<ImageView>(R.id.imageView)
+            val imageView = findViewById<ImageView>(R.id.imageView)
         Glide.with( this )
             .load(intent.getStringExtra("intent_image"))
             .placeholder(R.drawable.img_placeholder)
