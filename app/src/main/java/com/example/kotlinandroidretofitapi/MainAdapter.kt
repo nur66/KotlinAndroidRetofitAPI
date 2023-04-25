@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 
-class MainAdapter(val results : ArrayList<MainModel.Result>)
+class MainAdapter(val results : ArrayList<MainModel.Result>, val listener : OnAdapterListener)
     : RecyclerView.Adapter<MainAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder (
@@ -28,6 +28,9 @@ class MainAdapter(val results : ArrayList<MainModel.Result>)
             .error(R.drawable.img_placeholder)
             .centerCrop()
             .into(holder.imageView)
+        holder.view.setOnClickListener {
+            listener.onClick( result )
+        }
     }
 
     class ViewHolder(val view: View) : RecyclerView.ViewHolder(view){
@@ -39,5 +42,10 @@ class MainAdapter(val results : ArrayList<MainModel.Result>)
         results.clear()
         results.addAll( data )
         notifyDataSetChanged()
+    }
+
+    // jika di klik
+    interface OnAdapterListener{
+        fun onClick( result : MainModel.Result )
     }
 }

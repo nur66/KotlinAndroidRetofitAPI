@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kotlinandroidretofitapi.retrofit.ApiService
@@ -29,7 +30,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setUpRecyclerView() {
-        mainAdapter = MainAdapter(arrayListOf())
+        mainAdapter = MainAdapter(arrayListOf(), object : MainAdapter.OnAdapterListener {
+            override fun onClick(result: MainModel.Result) {
+                Toast.makeText(applicationContext, result.title, Toast.LENGTH_SHORT).show()
+            }
+
+        })
         findViewById<RecyclerView>(R.id.recyclerView).adapter = mainAdapter
         findViewById<RecyclerView>(R.id.recyclerView).layoutManager = LinearLayoutManager(applicationContext)
     }
